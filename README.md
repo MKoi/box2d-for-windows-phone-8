@@ -1,7 +1,7 @@
 # box2d-for-windows-phone-8
 Box2d WP8 lib. 
 Define B2_CONCURRENT_SOLVER in b2ContactSolver.cpp in order to use parallel pattern library (ppl) optimisations.
-'''C
+```C
 ---  B2_CONCURRENT_SOLVER example begin ---
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
@@ -38,13 +38,13 @@ bool b2ContactSolver::SolvePositionConstraints()
 	return minSeparation >= -3.0f * b2_linearSlop;
 \#endif
 ---  B2_CONCURRENT_SOLVER example end ---
-'''
+```
 TODO: Use B2_CONCURRENT_SOLVER also in b2CollidePolygon.cpp.
 
 
 
 Define B2_DXMATH in b2MAth.h in order to use DirectXMath optimised math routines.
-'''C
+```C
 --- B2_DXMATH example begin ---
 /// Transpose multiply two rotations: qT * r
 inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
@@ -70,4 +70,4 @@ inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
 }
 
 --- B2_DXMATH example end ---
-'''
+```
