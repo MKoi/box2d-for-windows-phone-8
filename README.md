@@ -7,36 +7,36 @@ Define B2_CONCURRENT_SOLVER in b2ContactSolver.cpp in order to use parallel patt
 bool b2ContactSolver::SolvePositionConstraints()
 {
 	
-\#ifdef  B2_CONCURRENT_SOLVER
+#ifdef  B2_CONCURRENT_SOLVER
 	concurrency::combinable<float> minSeparation;
 	concurrency::parallel_for(0, m_count, [&](int32 i)
 	{
 		minSeparation.local() = 0.0f;
-\#else
+#else
 	float32 minSeparation = 0.0f;
 	for (int32 i = 0; i < m_count; ++i)
 	{
-\#endif
+#endif
 //code removed
-\#ifdef B2_CONCURRENT_SOLVER
+#ifdef B2_CONCURRENT_SOLVER
 			if (separation < minSeparation.local())
 			{				
 				minSeparation.local() = separation;
 			}
-\#else
+#else
 			minSeparation = b2Min(minSeparation, separation);
-\#endif
+#endif
 //code removed
-\#ifdef B2_CONCURRENT_SOLVER
+#ifdef B2_CONCURRENT_SOLVER
 	});
 	float result = minSeparation.combine([](float left, float right) { return (left < right) ? left : right; });
 	return result >= -3.0f * b2_linearSlop;
-\#else
+#else
 	}
 	// We can't expect minSpeparation >= -b2_linearSlop because we don't
 	// push the separation above -b2_linearSlop.
 	return minSeparation >= -3.0f * b2_linearSlop;
-\#endif
+#endif
 ---  B2_CONCURRENT_SOLVER example end ---
 ```
 TODO: Use B2_CONCURRENT_SOLVER also in b2CollidePolygon.cpp.
@@ -54,7 +54,7 @@ inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
 	// s = qc * rs - qs * rc
 	// c = qc * rc + qs * rs
 	b2Rot qr;
-\#ifdef B2_DXMATH
+#ifdef B2_DXMATH
 	DirectX::XMVECTOR v1 = DirectX::XMVectorSet(q.c, -q.s, q.c, q.s);
 	DirectX::XMVECTOR v2 = DirectX::XMVectorSet(r.s, r.c, r.c, r.s);
 	v1 = DirectX::XMVectorMultiply(v1, v2);
@@ -62,10 +62,10 @@ inline b2Rot b2MulT(const b2Rot& q, const b2Rot& r)
 	v1 = DirectX::XMVectorAdd(v1, v2);
 	qr.s = DirectX::XMVectorGetX(v1);
 	qr.c = DirectX::XMVectorGetZ(v1);
-\#else
+#else
 	qr.s = q.c * r.s - q.s * r.c;
 	qr.c = q.c * r.c + q.s * r.s;
-\#endif
+#endif
 	return qr;
 }
 
